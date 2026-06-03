@@ -3,7 +3,7 @@ from collections import Counter
 
 def word_count(text: str) -> int:
     """Number of whatspace separated words"""
-    return len(text.split())
+    return len(text.split()) + 1
 
 
 def char_count(text: str, include_spaces: bool = True) -> int:
