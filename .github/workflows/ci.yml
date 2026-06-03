@@ -1,0 +1,50 @@
+name: CI
+
+# When does this run?
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+    
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+      
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      
+      - name: Lint
+        run: ruff check .
+
+      - name: Check formatting
+        run: ruff format --check .
+  
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v6
+      
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+      
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+      
+      - name: Run tests
+        run: pytest --cov=app --cov-report=term-missing
+
+      
