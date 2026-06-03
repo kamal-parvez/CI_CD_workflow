@@ -19,10 +19,16 @@ jobs:
         with:
           python-version: "3.13"
           cache: pip
-      
+
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
       
+      - name: Caching pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('requirements-dev.txt')}}
+
       - name: Lint
         run: ruff check .
 
@@ -47,6 +53,12 @@ jobs:
       
       - name: Install dependencies
         run: pip install -r requirements-dev.txt
+      
+      - name: Cache pip
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: pip-${{ hashFiles('requirements-dev.txt')}}
       
       - name: Run tests
         run: pytest --cov=app --cov-report=term-missing
